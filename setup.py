@@ -4,105 +4,67 @@
 # Note: To use the 'upload' functionality of this file, you must:
 #   $ pip install twine
 
-import codecs
 import os
 import sys
-from shutil import rmtree
+import io
+from setuptools import find_packages, setup, Command, setup
 
-from setuptools import find_packages, setup, Command
+import objopt
 
 # Package meta-data.
-NAME = 'objopt'
-DESCRIPTION = 'Object oriented optimization'
-URL = 'https://github.com/stsievert/objopt'
-EMAIL = 'dev@stsievert.com'
-AUTHOR = 'Scott Sievert'
+NAME = "objopt"
+DESCRIPTION = "Object oriented optimization"
+URL = "https://github.com/stsievert/objopt"
+EMAIL = "dev@stsievert.com"
+AUTHOR = "Scott Sievert"
 
 # What packages are required for this module to be executed?
-REQUIRED = [
-    'numpy'
-]
-
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
-# Except, perhaps the License and Trove Classifiers!
-
-here = os.path.abspath(os.path.dirname(__file__))
-
-# Import the README and use it as the long-description.
-# Note: this will only work if 'README.rst' is present in your MANIFEST.in file!
-with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = '\n' + f.read()
-
-# Load the package's __version__.py module as a dictionary.
-about = {}
-with open(os.path.join(here, NAME, '__version__.py')) as f:
-    exec(f.read(), about)
+REQUIRED = ["numpy"]
 
 
-class PublishCommand(Command):
-    """Support setup.py publish."""
-
-    description = 'Build and publish the package.'
-    user_options = []
-
-    @staticmethod
-    def status(s):
-        """Prints things in bold."""
-        print('\033[1m{0}\033[0m'.format(s))
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        try:
-            self.status('Removing previous builds…')
-            rmtree(os.path.join(here, 'dist'))
-        except FileNotFoundError:
-            pass
-
-        self.status('Building Source and Wheel (universal) distribution…')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
-
-        self.status('Uploading the package to PyPi via Twine…')
-        os.system('twine upload dist/*')
-
-        sys.exit()
+version = objopt.__version__
 
 
-# Where the magic happens:
+if sys.argv[-1] == "publish":
+    os.system("python setup.py sdist upload")
+    os.system("python setup.py bdist_wheel upload")
+    sys.exit()
+
+if sys.argv[-1] == "tag":
+    os.system("git tag -a %s -m 'version %s'" % (version, version))
+    os.system("git push --tags")
+    sys.exit()
+
+with io.open("README.md", "r", encoding="utf-8") as readme_file:
+    readme = readme_file.read()
+
+requirements = ["numpy"]
+
+if sys.argv[-1] == "readme":
+    print(readme)
+    sys.exit()
+
+
 setup(
     name=NAME,
-    version=about['__version__'],
+    version=version,
     description=DESCRIPTION,
-    long_description=long_description,
+    long_description=readme,
     author=AUTHOR,
     author_email=EMAIL,
     url=URL,
-    packages=find_packages(exclude=('tests',)),
-    # If your package is a single module, use this instead of 'packages':
-    # py_modules=['mypackage'],
-
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
-    install_requires=REQUIRED,
+    packages=["objopt"],
+    package_dir={"objopt": "objopt"},
     include_package_data=True,
-    license='ISC',
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
+    install_requires=requirements,
+    license="MIT",
+    zip_safe=False,
     classifiers=[
-        # Trove classifiers
-        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'License :: OSI Approved :: ISC License',
-        'Programming Language :: Python',
-        'Topic :: Scientific/Engineering :: Mathematics',
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Science/Research',
+        "Programming Language :: Python",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Science/Research",
     ],
-    # $ setup.py publish support.
-    cmdclass={
-        'publish': PublishCommand,
-    },
+    keywords=["optimization", "machine learning", "theory", "object oriented"],
 )
