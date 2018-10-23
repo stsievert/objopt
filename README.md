@@ -1,5 +1,7 @@
 
-## objopt
+**This library is no longer maintained.** I recommend using PyTorch instead of
+this library.
+
 This library provides object oriented optimization. This allows...
 
 1. using theoretic values (such as the strong convexity parameter)
