@@ -15,7 +15,7 @@ from setuptools import find_packages, setup, Command
 NAME = 'objopt'
 DESCRIPTION = 'Object oriented optimization'
 URL = 'https://github.com/stsievert/objopt'
-EMAIL = 'sievert.scott@gmail.com'
+EMAIL = 'dev@stsievert.com'
 AUTHOR = 'Scott Sievert'
 
 # What packages are required for this module to be executed?
@@ -97,12 +97,9 @@ setup(
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'License :: OSI Approved :: ISC License',
         'Programming Language :: Python',
-        Topic :: Scientific/Engineering :: Mathematics
-        Development Status :: 2 - Pre-Alpha
-        Intended Audience :: Science/Research
-
-
-
+        'Topic :: Scientific/Engineering :: Mathematics',
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Science/Research',
     ],
     # $ setup.py publish support.
     cmdclass={

@@ -7,8 +7,7 @@ This library provides...
       value partway through? Want to change the values as time goes on?
     * getting results intermediately (or in the presence of a keyboard
       interrept)
-    * having call backs, etc
-5. TODO integration with PyTorch
+    * having callbacks, etc
 
 ## Features
 
